@@ -12,6 +12,8 @@ import { type Shelter } from "@/components/shelter/data";
 import { getGeminiApiKey } from "@/lib/runtime-env";
 import { syncOfficialShelters } from "@/lib/shelter-sync";
 
+const GEMINI_MODEL = "gemini-2.5-flash";
+
 type GeminiMatchedShelter = {
   name: string;
   reason: string;
@@ -132,7 +134,7 @@ const callGeminiMatch = createServerFn({ method: "POST" })
       );
     }
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
     const prompt = `
 你是一個專業的流浪動物物資媒合 AI 顧問。請分析使用者的「捐贈物資描述」，並根據我提供的「全台收容所名單與需求」，同時扮演：
 1. 收容所媒合顧問：挑出最適合的收容所。
@@ -175,6 +177,7 @@ ${JSON.stringify(
 - matchedShelters 最多 3 家。
 - matchedShelters.name 必須使用候選收容所 JSON 裡既有的 name，不能自行創造新名稱。
 - safetyWarning 與 logisticsAdvice 沒有內容時必須是 null，不要回傳空字串。
+- 如果使用者輸入不是具體可捐贈物資，或完全無法判斷可捐贈內容，例如「我沒錢」、「不知道」、「隨便」、「今天心情不好」，請將 safetyWarning 設為「目前輸入不像具體可捐贈物資，請改填物資名稱、數量或狀態，例如貓砂 2 包、二手毛巾 10 條。」、logisticsAdvice 設為 null、matchedShelters 設為空陣列。
 - 所有文字使用繁體中文。
 `;
 
@@ -197,7 +200,13 @@ ${JSON.stringify(
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API request failed: ${response.status}`);
+      const errorData = await response.json().catch(() => null);
+      const message =
+        typeof errorData?.error?.message === "string"
+          ? errorData.error.message
+          : `Gemini API request failed: ${response.status}`;
+
+      throw new Error(message);
     }
 
     const responseData = await response.json();
@@ -298,14 +307,14 @@ function Index() {
 
         setSafetyWarning(advisorResult.safetyWarning);
         setLogisticsAdvice(advisorResult.logisticsAdvice);
-        setResults(matchedShelters.length > 0 ? matchedShelters : candidates);
+        setResults(matchedShelters);
         setMatchReasons(reasons);
       } catch (error) {
         console.error(error);
         setErrorMessage(
-          error instanceof Error
-            ? `${error.message} 已改顯示符合縣市條件的收容所清單。`
-            : "AI 語意媒合暫時失敗，已改顯示符合縣市條件的收容所清單。",
+          error instanceof Error && error.message.includes("尚未設定 Gemini API key")
+            ? error.message
+            : "AI 顧問暫時無法完成分析，已改顯示符合縣市條件的收容所清單。",
         );
         setResults(candidates);
         setMatchReasons({});
@@ -331,6 +340,26 @@ function Index() {
     acc[key] = acc[key] ? [...acc[key], shelter] : [shelter];
     return acc;
   }, {});
+  const hasAdvisorAlerts = Boolean(safetyWarning || logisticsAdvice);
+  const advisorAlerts = hasAdvisorAlerts ? (
+    <div className="mb-6 space-y-4">
+      {safetyWarning ? (
+        <Alert className="border-orange-300 bg-orange-50 text-orange-950">
+          <AlertTriangle className="h-4 w-4 text-orange-600" />
+          <AlertTitle className="text-orange-900">安全審查提醒</AlertTitle>
+          <AlertDescription>{safetyWarning}</AlertDescription>
+        </Alert>
+      ) : null}
+
+      {logisticsAdvice ? (
+        <Alert className="border-emerald-300 bg-emerald-50 text-emerald-950">
+          <Truck className="h-4 w-4 text-emerald-600" />
+          <AlertTitle className="text-emerald-900">物流寄送建議</AlertTitle>
+          <AlertDescription>{logisticsAdvice}</AlertDescription>
+        </Alert>
+      ) : null}
+    </div>
+  ) : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -373,28 +402,13 @@ function Index() {
             </div>
           </div>
         </div>
+        {advisorAlerts}
         {shown.length === 0 && !isLoading ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-muted-foreground">
             目前沒有可顯示的收容所資料，請稍後再試或更換關鍵字。
           </div>
         ) : mapView === "map" ? (
-          <div className="space-y-6">
-            {safetyWarning ? (
-              <Alert className="border-orange-300 bg-orange-50 text-orange-950">
-                <AlertTriangle className="h-4 w-4 text-orange-600" />
-                <AlertTitle className="text-orange-900">安全審查提醒</AlertTitle>
-                <AlertDescription>{safetyWarning}</AlertDescription>
-              </Alert>
-            ) : null}
-
-            {logisticsAdvice ? (
-              <Alert className="border-emerald-300 bg-emerald-50 text-emerald-950">
-                <Truck className="h-4 w-4 text-emerald-600" />
-                <AlertTitle className="text-emerald-900">物流寄送建議</AlertTitle>
-                <AlertDescription>{logisticsAdvice}</AlertDescription>
-              </Alert>
-            ) : null}
-
+          <div>
             <div className="rounded-3xl border border-border bg-card p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <div>
@@ -427,22 +441,6 @@ function Index() {
           </div>
         ) : (
           <div className="space-y-8">
-            {safetyWarning ? (
-              <Alert className="border-orange-300 bg-orange-50 text-orange-950">
-                <AlertTriangle className="h-4 w-4 text-orange-600" />
-                <AlertTitle className="text-orange-900">安全審查提醒</AlertTitle>
-                <AlertDescription>{safetyWarning}</AlertDescription>
-              </Alert>
-            ) : null}
-
-            {logisticsAdvice ? (
-              <Alert className="border-emerald-300 bg-emerald-50 text-emerald-950">
-                <Truck className="h-4 w-4 text-emerald-600" />
-                <AlertTitle className="text-emerald-900">物流寄送建議</AlertTitle>
-                <AlertDescription>{logisticsAdvice}</AlertDescription>
-              </Alert>
-            ) : null}
-
             {Object.entries(groupedShelters).map(([city, items]) => (
               <div key={city} className="rounded-3xl border border-border bg-card p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
