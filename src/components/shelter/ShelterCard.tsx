@@ -29,24 +29,27 @@ export function ShelterCard({
       </CardHeader>
       <CardContent className="flex-1">
         {matchReason ? (
-          <div className="mb-4 rounded-xl border border-primary/20 bg-primary/10 p-3 text-sm leading-relaxed text-foreground">
+          <div className="rounded-xl border border-primary/20 bg-primary/10 p-3 text-sm leading-relaxed text-foreground">
             <div className="mb-1 flex items-center gap-1.5 font-medium text-primary">
               <Sparkles className="h-4 w-4" />
-              AI 推薦理由
+              AI 語意推論理由
             </div>
             <p>{matchReason}</p>
           </div>
-        ) : null}
-        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          急缺物資
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {shelter.needs.map((n) => (
-            <Badge key={n} variant="secondary" className="bg-accent text-accent-foreground">
-              {n}
-            </Badge>
-          ))}
-        </div>
+        ) : (
+          <>
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              急缺物資
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {shelter.needs.map((n) => (
+                <Badge key={n} variant="secondary" className="bg-accent text-accent-foreground">
+                  {n}
+                </Badge>
+              ))}
+            </div>
+          </>
+        )}
       </CardContent>
       <CardFooter>
         <Button onClick={() => onPack(shelter)} className="w-full" variant="default">

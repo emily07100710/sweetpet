@@ -410,7 +410,7 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
                 </div>
               </div>
               <div style={{ fontSize: "12px", color: "#6b7280", textAlign: "right" }}>
-                本系統由 程雍和 (Yong-He Cheng) 全額發起與贊助
+                本系統由 程永和 (Yung-Ho Cheng) 全額發起與贊助
               </div>
             </div>
           </div>

@@ -77,7 +77,7 @@ export function MatchForm({
               className="mt-4 h-12 w-full text-base font-semibold"
             >
               <Sparkles className="mr-2 h-4 w-4" />
-              {loading ? "AI 語意分析與配對中..." : "AI 智能媒合"}
+              {loading ? "🤖 AI 語意分析與安全審查中..." : "AI 智能媒合"}
             </Button>
           </div>
         </div>
