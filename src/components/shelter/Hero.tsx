@@ -22,7 +22,7 @@ export function Hero() {
               縣市覆蓋
             </div>
             <div>
-              <div className="text-2xl font-semibold text-foreground">68+</div>
+              <div className="text-2xl font-semibold text-foreground">32</div>
               合作收容所
             </div>
             <div>
