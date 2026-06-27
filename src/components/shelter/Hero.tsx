@@ -14,7 +14,7 @@ export function Hero() {
             <span className="text-primary">點亮微光</span>
           </h1>
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-            全台毛孩物資 AI 智能媒合與認養平台，將您手中的善意，精準送往最需要的收容所。
+            全台毛孩物資 AI 智能媒合平台，將您手中的善意，精準送往最需要的收容所。
           </p>
           <div className="mt-8 flex flex-wrap gap-6 text-sm text-muted-foreground">
             <div>

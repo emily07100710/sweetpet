@@ -164,22 +164,46 @@
   box-shadow: var(--shadow-warm);
 }
 
+@page {
+  size: A4 portrait;
+  margin: 8mm;
+}
+
 @media print {
-  body * {
-    visibility: hidden !important;
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    height: auto !important;
   }
+
+  body {
+    margin: 0;
+  }
+
+  body > *:not(.print-area) {
+    display: none !important;
+  }
+
   .print-area,
   .print-area * {
     visibility: visible !important;
   }
+
   .print-area {
-    position: fixed !important;
-    inset: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: none !important;
     box-shadow: none !important;
     border: none !important;
+    background: #fff !important;
+    color: #111 !important;
+    padding: 0 !important;
+    margin: 0 !important;
   }
+
   .no-print {
     display: none !important;
   }

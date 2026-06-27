@@ -80,12 +80,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "全台流浪動物物資智能媒合平台" },
       {
         name: "description",
-        content: "用科技點亮微光：全台毛孩物資 AI 智能媒合與認養平台。",
+        content: "用科技點亮微光：全台毛孩物資 AI 智能媒合平台。",
       },
       { property: "og:title", content: "全台流浪動物物資智能媒合平台" },
       {
         property: "og:description",
-        content: "全台毛孩物資 AI 智能媒合與認養平台。",
+        content: "全台毛孩物資 AI 智能媒合平台。",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -1,12 +1,18 @@
-import { MapPin, Package } from "lucide-react";
+import { MapPin, Package, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import type { Shelter } from "./data";
 
 export function ShelterCard({
-  shelter, onPack,
-}: { shelter: Shelter; onPack: (s: Shelter) => void }) {
+  shelter,
+  matchReason,
+  onPack,
+}: {
+  shelter: Shelter;
+  matchReason?: string;
+  onPack: (s: Shelter) => void;
+}) {
   return (
     <Card className="flex flex-col border-border bg-card transition-shadow hover:shadow-warm">
       <CardHeader className="space-y-3">
@@ -15,15 +21,22 @@ export function ShelterCard({
             {shelter.city}
           </span>
         </div>
-        <h3 className="font-display text-xl leading-snug text-foreground">
-          {shelter.name}
-        </h3>
+        <h3 className="font-display text-xl leading-snug text-foreground">{shelter.name}</h3>
         <div className="flex items-start gap-2 text-sm text-muted-foreground">
           <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary/70" />
           <span>{shelter.address}</span>
         </div>
       </CardHeader>
       <CardContent className="flex-1">
+        {matchReason ? (
+          <div className="mb-4 rounded-xl border border-primary/20 bg-primary/10 p-3 text-sm leading-relaxed text-foreground">
+            <div className="mb-1 flex items-center gap-1.5 font-medium text-primary">
+              <Sparkles className="h-4 w-4" />
+              AI 推薦理由
+            </div>
+            <p>{matchReason}</p>
+          </div>
+        ) : null}
         <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
           急缺物資
         </p>

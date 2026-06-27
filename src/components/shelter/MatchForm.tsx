@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { TAIWAN_CITIES } from "./data";
 
@@ -17,7 +21,12 @@ type Props = {
 };
 
 export function MatchForm({
-  description, city, onDescriptionChange, onCityChange, onMatch, loading,
+  description,
+  city,
+  onDescriptionChange,
+  onCityChange,
+  onMatch,
+  loading,
 }: Props) {
   return (
     <section id="match" className="mx-auto max-w-5xl px-6 py-16 md:py-20">
@@ -55,7 +64,9 @@ export function MatchForm({
               </SelectTrigger>
               <SelectContent>
                 {TAIWAN_CITIES.map((c) => (
-                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                  <SelectItem key={c} value={c}>
+                    {c}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -66,7 +77,7 @@ export function MatchForm({
               className="mt-4 h-12 w-full text-base font-semibold"
             >
               <Sparkles className="mr-2 h-4 w-4" />
-              {loading ? "媒合中…" : "AI 智能媒合"}
+              {loading ? "AI 語意分析與配對中..." : "AI 智能媒合"}
             </Button>
           </div>
         </div>
