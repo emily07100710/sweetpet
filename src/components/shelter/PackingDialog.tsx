@@ -26,6 +26,7 @@ const THANK_YOU_MESSAGE =
   "親愛的收容所團隊，感謝您們在第一線為流浪動物的付出。這是一點微薄的心意，希望能為毛孩們帶來溫暖。";
 const TAIPEI_DONATION_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfqycFMOSkh1ISzgknfWHV4egbFNRAxix7AGRA8ddv9rqX6lw/viewform";
+const PDF_CAPTURE_ID = "packing-dialog-pdf-template";
 
 function sanitizeFileName(value: string) {
   return value.replace(/[\\/:*?"<>|\s]+/g, "_");
@@ -72,6 +73,14 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
         backgroundColor: "#ffffff",
         useCORS: true,
         logging: false,
+        onclone: (clonedDocument) => {
+          const clonedTemplate = clonedDocument.getElementById(PDF_CAPTURE_ID);
+
+          if (clonedTemplate instanceof HTMLElement) {
+            clonedTemplate.style.left = "0";
+            clonedTemplate.style.top = "0";
+          }
+        },
       });
 
       if (canvas.width === 0 || canvas.height === 0) {
@@ -184,11 +193,12 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
         ) : null}
 
         <div
+          id={PDF_CAPTURE_ID}
           ref={pdfRef}
           aria-hidden="true"
           style={{
             position: "fixed",
-            left: 0,
+            left: "-9999px",
             top: 0,
             width: "794px",
             minHeight: "1123px",
@@ -199,7 +209,6 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             boxSizing: "border-box",
             lineHeight: 1.5,
             pointerEvents: "none",
-            zIndex: -1,
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
