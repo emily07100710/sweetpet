@@ -73,12 +73,20 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
         backgroundColor: "#ffffff",
         useCORS: true,
         logging: false,
-        onclone: (clonedDocument) => {
+        onclone: (clonedDocument, clonedElement) => {
+          clonedDocument.querySelectorAll("style, link[rel='stylesheet']").forEach((node) => {
+            node.remove();
+          });
+
+          clonedDocument.body.replaceChildren(clonedElement);
+
           const clonedTemplate = clonedDocument.getElementById(PDF_CAPTURE_ID);
 
           if (clonedTemplate instanceof HTMLElement) {
+            clonedTemplate.style.position = "static";
             clonedTemplate.style.left = "0";
             clonedTemplate.style.top = "0";
+            clonedTemplate.style.margin = "0";
           }
         },
       });
