@@ -38,6 +38,7 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
   const [donationItems, setDonationItems] = useState("");
   const [notes, setNotes] = useState("");
   const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!shelter) {
@@ -48,21 +49,34 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
     setContactPhone("");
     setDonationItems(shelter.needs.join("、"));
     setNotes("");
+    setExportError(null);
   }, [open, shelter]);
 
   if (!shelter) return null;
 
   const handleExportPdf = async () => {
-    if (!pdfRef.current) return;
+    if (!pdfRef.current) {
+      setExportError("PDF 內容尚未準備完成，請再試一次。");
+      return;
+    }
 
     setIsExporting(true);
+    setExportError(null);
 
     try {
+      await document.fonts?.ready;
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
       const canvas = await html2canvas(pdfRef.current, {
         scale: 2,
         backgroundColor: "#ffffff",
         useCORS: true,
+        logging: false,
       });
+
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error("PDF canvas is empty.");
+      }
 
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
@@ -70,11 +84,23 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = pdfWidth;
       const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
 
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position -= pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
       pdf.save(`愛心捐贈明細_${sanitizeFileName(shelter.name)}.pdf`);
     } catch (error) {
       console.error("Failed to export PDF", error);
+      setExportError("PDF 匯出失敗，請重新整理頁面後再試一次。");
     } finally {
       setIsExporting(false);
     }
@@ -82,7 +108,7 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl">愛心捐贈明細與心意卡</DialogTitle>
           <DialogDescription>
@@ -151,12 +177,18 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
           </div>
         </div>
 
+        {exportError ? (
+          <div className="rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+            {exportError}
+          </div>
+        ) : null}
+
         <div
           ref={pdfRef}
           aria-hidden="true"
           style={{
             position: "fixed",
-            left: "-9999px",
+            left: 0,
             top: 0,
             width: "794px",
             minHeight: "1123px",
@@ -166,6 +198,8 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             fontFamily: "Noto Sans TC, Microsoft JhengHei, sans-serif",
             boxSizing: "border-box",
             lineHeight: 1.5,
+            pointerEvents: "none",
+            zIndex: -1,
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
@@ -371,7 +405,7 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
           </Button>
           <Button type="button" onClick={handleExportPdf} disabled={isExporting}>
             <Download className="mr-2 h-4 w-4" />
-            {isExporting ? "正在匯出..." : "⬇️ 下載愛心捐贈明細與心意卡 (PDF)"}
+            {isExporting ? "正在匯出..." : "下載愛心捐贈明細與心意卡 (PDF)"}
           </Button>
         </DialogFooter>
       </DialogContent>

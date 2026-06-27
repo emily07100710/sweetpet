@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { Hero } from "@/components/shelter/Hero";
 import { MatchForm } from "@/components/shelter/MatchForm";
@@ -6,11 +7,17 @@ import { ShelterCard } from "@/components/shelter/ShelterCard";
 import { PackingDialog } from "@/components/shelter/PackingDialog";
 import { Footer } from "@/components/shelter/Footer";
 import { type Shelter } from "@/components/shelter/data";
+import { getGeminiApiKey } from "@/lib/runtime-env";
 import { syncOfficialShelters } from "@/lib/shelter-sync";
 
 type GeminiMatch = {
   shelterName: string;
   matchReason: string;
+};
+
+type GeminiMatchInput = {
+  description: string;
+  candidates: Shelter[];
 };
 
 export const Route = createFileRoute("/")({
@@ -72,15 +79,35 @@ function findShelterByGeminiName(candidates: Shelter[], shelterName: string) {
   });
 }
 
-async function callGeminiMatch(description: string, candidates: Shelter[]) {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+const callGeminiMatch = createServerFn({ method: "POST" })
+  .validator((data: unknown): GeminiMatchInput => {
+    if (!data || typeof data !== "object") {
+      throw new Error("媒合資料格式不正確，請重新送出。");
+    }
 
-  if (!apiKey || apiKey === "your_gemini_api_key_here") {
-    throw new Error("尚未設定 VITE_GEMINI_API_KEY，請先在 .env 補上 Gemini API key。");
-  }
+    const input = data as Partial<GeminiMatchInput>;
 
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  const prompt = `
+    if (typeof input.description !== "string" || !Array.isArray(input.candidates)) {
+      throw new Error("媒合資料格式不正確，請重新送出。");
+    }
+
+    return {
+      description: input.description,
+      candidates: input.candidates,
+    };
+  })
+  .handler(async ({ data }) => {
+    const { description, candidates } = data;
+    const apiKey = getGeminiApiKey();
+
+    if (!apiKey) {
+      throw new Error(
+        "尚未設定 Gemini API key。請在 Cloudflare Pages 環境變數加入 GEMINI_API_KEY，或重新部署讓既有設定生效。",
+      );
+    }
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const prompt = `
 你是全台動物收容所物資捐贈媒合助手。請根據捐贈者提供的物資描述，分析它與各收容所目前需求的語意相似度。
 
 請特別理解同義或近義物資，例如：
@@ -113,48 +140,48 @@ ${JSON.stringify(
 ]
 `;
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          parts: [{ text: prompt }],
-        },
-      ],
-      generationConfig: {
-        temperature: 0.2,
-        responseMimeType: "application/json",
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    }),
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          responseMimeType: "application/json",
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Gemini API request failed: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    const text = responseData?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (typeof text !== "string") {
+      throw new Error("Gemini response did not include text content.");
+    }
+
+    const parsed = JSON.parse(extractJsonArray(text));
+
+    if (!Array.isArray(parsed)) {
+      throw new Error("Gemini response JSON is not an array.");
+    }
+
+    return parsed
+      .filter(
+        (item): item is GeminiMatch =>
+          typeof item?.shelterName === "string" && typeof item?.matchReason === "string",
+      )
+      .slice(0, 3);
   });
-
-  if (!response.ok) {
-    throw new Error(`Gemini API request failed: ${response.status}`);
-  }
-
-  const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-  if (typeof text !== "string") {
-    throw new Error("Gemini response did not include text content.");
-  }
-
-  const parsed = JSON.parse(extractJsonArray(text));
-
-  if (!Array.isArray(parsed)) {
-    throw new Error("Gemini response JSON is not an array.");
-  }
-
-  return parsed
-    .filter(
-      (item): item is GeminiMatch =>
-        typeof item?.shelterName === "string" && typeof item?.matchReason === "string",
-    )
-    .slice(0, 3);
-}
 
 function Index() {
   const [description, setDescription] = useState("");
@@ -221,7 +248,7 @@ function Index() {
           return;
         }
 
-        const aiMatches = await callGeminiMatch(description, candidates);
+        const aiMatches = await callGeminiMatch({ data: { description, candidates } });
         const matchedShelters = aiMatches
           .map((match) => findShelterByGeminiName(candidates, match.shelterName))
           .filter((shelter): shelter is Shelter => Boolean(shelter));
