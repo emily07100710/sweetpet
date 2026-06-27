@@ -7,7 +7,7 @@ export function Hero() {
         src={heroBackground}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full object-cover object-[62%_center] md:object-center"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-background/30" />
       <div className="relative mx-auto max-w-6xl px-6 pt-12 md:pt-20">

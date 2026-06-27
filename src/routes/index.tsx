@@ -12,7 +12,7 @@ import { type Shelter } from "@/components/shelter/data";
 import { getGeminiApiKey } from "@/lib/runtime-env";
 import { syncOfficialShelters } from "@/lib/shelter-sync";
 
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-2.5-flash-lite";
 
 type GeminiMatchedShelter = {
   name: string;
@@ -107,6 +107,13 @@ function findShelterByGeminiName(candidates: Shelter[], shelterName: string) {
   });
 }
 
+function orderSheltersByAiMatches(candidates: Shelter[], matchedShelters: Shelter[]) {
+  const matchedIds = new Set(matchedShelters.map((shelter) => shelter.id));
+  const unmatchedShelters = candidates.filter((shelter) => !matchedIds.has(shelter.id));
+
+  return [...matchedShelters, ...unmatchedShelters];
+}
+
 const callGeminiMatch = createServerFn({ method: "POST" })
   .validator((data: unknown): GeminiMatchInput => {
     if (!data || typeof data !== "object") {
@@ -176,6 +183,7 @@ ${JSON.stringify(
 請務必遵守：
 - matchedShelters 最多 3 家。
 - matchedShelters.name 必須使用候選收容所 JSON 裡既有的 name，不能自行創造新名稱。
+- matchedShelters 只列出你真正推薦的高匹配收容所。若沒有明確匹配，請回傳空陣列，前端仍會顯示同縣市其他可捐贈地點。
 - safetyWarning 與 logisticsAdvice 沒有內容時必須是 null，不要回傳空字串。
 - 如果使用者輸入不是具體可捐贈物資，或完全無法判斷可捐贈內容，例如「我沒錢」、「不知道」、「隨便」、「今天心情不好」，請將 safetyWarning 設為「目前輸入不像具體可捐贈物資，請改填物資名稱、數量或狀態，例如貓砂 2 包、二手毛巾 10 條。」、logisticsAdvice 設為 null、matchedShelters 設為空陣列。
 - 所有文字使用繁體中文。
@@ -193,8 +201,9 @@ ${JSON.stringify(
           },
         ],
         generationConfig: {
-          temperature: 0.2,
+          temperature: 0.1,
           responseMimeType: "application/json",
+          maxOutputTokens: 768,
         },
       }),
     });
@@ -307,7 +316,7 @@ function Index() {
 
         setSafetyWarning(advisorResult.safetyWarning);
         setLogisticsAdvice(advisorResult.logisticsAdvice);
-        setResults(matchedShelters);
+        setResults(orderSheltersByAiMatches(candidates, matchedShelters));
         setMatchReasons(reasons);
       } catch (error) {
         console.error(error);
