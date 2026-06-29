@@ -49,10 +49,9 @@ function PdfThanksIllustration() {
         alt="微笑的白色博美與布偶貓，兩側有愛心"
         style={{
           display: "block",
-          width: "100%",
-          maxWidth: "470px",
-          height: "82px",
-          objectFit: "contain",
+          width: "430px",
+          maxWidth: "100%",
+          height: "auto",
           margin: "0 auto",
           borderRadius: "10px",
         }}
