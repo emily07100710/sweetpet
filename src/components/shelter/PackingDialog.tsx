@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import donationThanksArt from "@/assets/donation-thanks-art.jpg";
 import type { Shelter } from "./data";
 
 type Props = {
@@ -39,182 +40,26 @@ function PdfThanksIllustration() {
         border: "1px solid #fecdd3",
         backgroundColor: "#fff7ed",
         borderRadius: "14px",
-        padding: "10px 14px",
+        padding: "8px 14px 10px",
         textAlign: "center",
       }}
     >
-      <div
-        aria-label="開心的狗狗與貓貓插畫"
-        role="img"
+      <img
+        src={donationThanksArt}
+        alt="微笑的白色博美與布偶貓，兩側有愛心"
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "14px",
+          display: "block",
+          width: "100%",
+          maxWidth: "470px",
+          height: "82px",
+          objectFit: "contain",
+          margin: "0 auto",
+          borderRadius: "10px",
         }}
-      >
-        <div style={{ fontSize: "22px", color: "#fb7185", lineHeight: 1 }}>♥</div>
-        <div
-          style={{
-            position: "relative",
-            width: "52px",
-            height: "46px",
-            borderRadius: "46% 46% 42% 42%",
-            backgroundColor: "#f6b35f",
-            border: "2px solid #d97706",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              left: "-9px",
-              top: "12px",
-              width: "16px",
-              height: "25px",
-              borderRadius: "999px",
-              backgroundColor: "#d97706",
-              transform: "rotate(22deg)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              right: "-9px",
-              top: "12px",
-              width: "16px",
-              height: "25px",
-              borderRadius: "999px",
-              backgroundColor: "#d97706",
-              transform: "rotate(-22deg)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: "15px",
-              top: "16px",
-              width: "5px",
-              height: "5px",
-              borderRadius: "999px",
-              backgroundColor: "#2f241d",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              right: "15px",
-              top: "16px",
-              width: "5px",
-              height: "5px",
-              borderRadius: "999px",
-              backgroundColor: "#2f241d",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: "22px",
-              top: "25px",
-              width: "8px",
-              height: "6px",
-              borderRadius: "999px",
-              backgroundColor: "#2f241d",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: "18px",
-              top: "33px",
-              width: "16px",
-              height: "8px",
-              borderBottom: "3px solid #2f241d",
-              borderRadius: "0 0 999px 999px",
-            }}
-          />
-        </div>
-        <div
-          style={{
-            position: "relative",
-            width: "50px",
-            height: "48px",
-            borderRadius: "44% 44% 42% 42%",
-            backgroundColor: "#fff7ed",
-            border: "2px solid #a16207",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              left: "3px",
-              top: "-12px",
-              width: "18px",
-              height: "18px",
-              backgroundColor: "#c08457",
-              transform: "rotate(45deg)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              right: "3px",
-              top: "-12px",
-              width: "18px",
-              height: "18px",
-              backgroundColor: "#c08457",
-              transform: "rotate(45deg)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: "14px",
-              top: "17px",
-              width: "5px",
-              height: "5px",
-              borderRadius: "999px",
-              backgroundColor: "#2f241d",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              right: "14px",
-              top: "17px",
-              width: "5px",
-              height: "5px",
-              borderRadius: "999px",
-              backgroundColor: "#2f241d",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: "21px",
-              top: "25px",
-              width: "8px",
-              height: "6px",
-              borderRadius: "0 0 999px 999px",
-              backgroundColor: "#f97316",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: "17px",
-              top: "33px",
-              width: "16px",
-              height: "8px",
-              borderBottom: "3px solid #2f241d",
-              borderRadius: "0 0 999px 999px",
-            }}
-          />
-        </div>
-        <div style={{ fontSize: "22px", color: "#fb7185", lineHeight: 1 }}>♥</div>
-      </div>
+      />
       <div
         style={{
-          marginTop: "6px",
+          marginTop: "4px",
           fontSize: "18px",
           fontWeight: 800,
           color: "#be123c",
@@ -261,6 +106,22 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
 
     try {
       await document.fonts?.ready;
+      const images = Array.from(pdfRef.current.querySelectorAll("img"));
+
+      await Promise.all(
+        images.map((image) => {
+          if (image.complete && image.naturalWidth > 0) {
+            return Promise.resolve();
+          }
+
+          return new Promise<void>((resolve, reject) => {
+            image.addEventListener("load", () => resolve(), { once: true });
+            image.addEventListener("error", () => reject(new Error("PDF image failed to load.")), {
+              once: true,
+            });
+          });
+        }),
+      );
       await new Promise((resolve) => requestAnimationFrame(resolve));
 
       const canvas = await html2canvas(pdfRef.current, {
