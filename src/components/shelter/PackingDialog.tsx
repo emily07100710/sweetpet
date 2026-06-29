@@ -32,6 +32,88 @@ function sanitizeFileName(value: string) {
   return value.replace(/[\\/:*?"<>|\s]+/g, "_");
 }
 
+function PdfThanksIllustration() {
+  return (
+    <div
+      style={{
+        border: "1px solid #fecdd3",
+        backgroundColor: "#fff7ed",
+        borderRadius: "20px",
+        padding: "18px 20px",
+        textAlign: "center",
+      }}
+    >
+      <svg
+        width="260"
+        height="108"
+        viewBox="0 0 260 108"
+        role="img"
+        aria-label="開心的狗狗與貓貓插畫"
+        style={{ display: "block", margin: "0 auto" }}
+      >
+        <circle cx="84" cy="58" r="34" fill="#f6b35f" />
+        <ellipse cx="47" cy="57" rx="17" ry="25" fill="#d97706" transform="rotate(18 47 57)" />
+        <ellipse cx="121" cy="57" rx="17" ry="25" fill="#d97706" transform="rotate(-18 121 57)" />
+        <circle cx="72" cy="51" r="4" fill="#2f241d" />
+        <circle cx="96" cy="51" r="4" fill="#2f241d" />
+        <ellipse cx="84" cy="63" rx="8" ry="6" fill="#2f241d" />
+        <path
+          d="M73 73 Q84 84 95 73"
+          fill="none"
+          stroke="#2f241d"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+        <path
+          d="M84 69 Q82 77 88 79"
+          fill="none"
+          stroke="#ef4444"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <path d="M157 31 L135 56 L144 85 L170 96 L196 85 L205 56 L183 31 Z" fill="#f8fafc" />
+        <path d="M157 31 L137 55 L145 83" fill="#c08457" opacity="0.85" />
+        <path d="M183 31 L203 55 L195 83" fill="#a16207" opacity="0.78" />
+        <circle cx="162" cy="58" r="4" fill="#2f241d" />
+        <circle cx="178" cy="58" r="4" fill="#2f241d" />
+        <path d="M170 66 L164 72 L176 72 Z" fill="#f97316" />
+        <path
+          d="M161 78 Q170 84 179 78"
+          fill="none"
+          stroke="#2f241d"
+          strokeWidth="3"
+          strokeLinecap="round"
+        />
+        <path
+          d="M60 21 C52 10 34 14 34 29 C34 43 60 54 60 54 C60 54 86 43 86 29 C86 14 68 10 60 21 Z"
+          fill="#fb7185"
+        />
+        <path
+          d="M211 24 C205 15 191 18 191 30 C191 42 211 50 211 50 C211 50 231 42 231 30 C231 18 217 15 211 24 Z"
+          fill="#fb7185"
+          opacity="0.9"
+        />
+        <path
+          d="M225 74 C220 66 208 68 208 79 C208 89 225 96 225 96 C225 96 242 89 242 79 C242 68 230 66 225 74 Z"
+          fill="#fda4af"
+        />
+        <circle cx="27" cy="83" r="5" fill="#fdba74" opacity="0.85" />
+        <circle cx="233" cy="56" r="4" fill="#fdba74" opacity="0.8" />
+      </svg>
+      <div
+        style={{
+          marginTop: "8px",
+          fontSize: "22px",
+          fontWeight: 800,
+          color: "#be123c",
+        }}
+      >
+        謝謝，我們能有你真好❤️
+      </div>
+    </div>
+  );
+}
+
 export function PackingDialog({ shelter, open, onOpenChange }: Props) {
   const pdfRef = useRef<HTMLDivElement | null>(null);
   const [donorName, setDonorName] = useState("");
@@ -151,6 +233,24 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             </div>
           ) : null}
 
+          <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4">
+            <p className="text-sm font-semibold text-amber-800">收件人資訊</p>
+            <div className="mt-2 space-y-2 text-sm text-amber-900">
+              <div>
+                <span className="font-medium">收件人：</span>
+                {shelter.name}
+              </div>
+              <div>
+                <span className="font-medium">地址：</span>
+                {shelter.address}
+              </div>
+              <div>
+                <span className="font-medium">電話：</span>
+                {shelter.phone || "未提供"}
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-1.5">
             <Label htmlFor="donor-name">捐贈人姓名</Label>
             <Input
@@ -245,6 +345,8 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
                 {THANK_YOU_MESSAGE}
               </div>
             </div>
+
+            <PdfThanksIllustration />
 
             <div
               style={{
