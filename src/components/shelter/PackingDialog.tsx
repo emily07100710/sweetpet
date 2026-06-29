@@ -38,77 +38,190 @@ function PdfThanksIllustration() {
       style={{
         border: "1px solid #fecdd3",
         backgroundColor: "#fff7ed",
-        borderRadius: "20px",
-        padding: "18px 20px",
+        borderRadius: "14px",
+        padding: "10px 14px",
         textAlign: "center",
       }}
     >
-      <svg
-        width="260"
-        height="108"
-        viewBox="0 0 260 108"
-        role="img"
+      <div
         aria-label="開心的狗狗與貓貓插畫"
-        style={{ display: "block", margin: "0 auto" }}
+        role="img"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "14px",
+        }}
       >
-        <circle cx="84" cy="58" r="34" fill="#f6b35f" />
-        <ellipse cx="47" cy="57" rx="17" ry="25" fill="#d97706" transform="rotate(18 47 57)" />
-        <ellipse cx="121" cy="57" rx="17" ry="25" fill="#d97706" transform="rotate(-18 121 57)" />
-        <circle cx="72" cy="51" r="4" fill="#2f241d" />
-        <circle cx="96" cy="51" r="4" fill="#2f241d" />
-        <ellipse cx="84" cy="63" rx="8" ry="6" fill="#2f241d" />
-        <path
-          d="M73 73 Q84 84 95 73"
-          fill="none"
-          stroke="#2f241d"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-        <path
-          d="M84 69 Q82 77 88 79"
-          fill="none"
-          stroke="#ef4444"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-        <path d="M157 31 L135 56 L144 85 L170 96 L196 85 L205 56 L183 31 Z" fill="#f8fafc" />
-        <path d="M157 31 L137 55 L145 83" fill="#c08457" opacity="0.85" />
-        <path d="M183 31 L203 55 L195 83" fill="#a16207" opacity="0.78" />
-        <circle cx="162" cy="58" r="4" fill="#2f241d" />
-        <circle cx="178" cy="58" r="4" fill="#2f241d" />
-        <path d="M170 66 L164 72 L176 72 Z" fill="#f97316" />
-        <path
-          d="M161 78 Q170 84 179 78"
-          fill="none"
-          stroke="#2f241d"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-        <path
-          d="M60 21 C52 10 34 14 34 29 C34 43 60 54 60 54 C60 54 86 43 86 29 C86 14 68 10 60 21 Z"
-          fill="#fb7185"
-        />
-        <path
-          d="M211 24 C205 15 191 18 191 30 C191 42 211 50 211 50 C211 50 231 42 231 30 C231 18 217 15 211 24 Z"
-          fill="#fb7185"
-          opacity="0.9"
-        />
-        <path
-          d="M225 74 C220 66 208 68 208 79 C208 89 225 96 225 96 C225 96 242 89 242 79 C242 68 230 66 225 74 Z"
-          fill="#fda4af"
-        />
-        <circle cx="27" cy="83" r="5" fill="#fdba74" opacity="0.85" />
-        <circle cx="233" cy="56" r="4" fill="#fdba74" opacity="0.8" />
-      </svg>
+        <div style={{ fontSize: "22px", color: "#fb7185", lineHeight: 1 }}>♥</div>
+        <div
+          style={{
+            position: "relative",
+            width: "52px",
+            height: "46px",
+            borderRadius: "46% 46% 42% 42%",
+            backgroundColor: "#f6b35f",
+            border: "2px solid #d97706",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              left: "-9px",
+              top: "12px",
+              width: "16px",
+              height: "25px",
+              borderRadius: "999px",
+              backgroundColor: "#d97706",
+              transform: "rotate(22deg)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              right: "-9px",
+              top: "12px",
+              width: "16px",
+              height: "25px",
+              borderRadius: "999px",
+              backgroundColor: "#d97706",
+              transform: "rotate(-22deg)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: "15px",
+              top: "16px",
+              width: "5px",
+              height: "5px",
+              borderRadius: "999px",
+              backgroundColor: "#2f241d",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              right: "15px",
+              top: "16px",
+              width: "5px",
+              height: "5px",
+              borderRadius: "999px",
+              backgroundColor: "#2f241d",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: "22px",
+              top: "25px",
+              width: "8px",
+              height: "6px",
+              borderRadius: "999px",
+              backgroundColor: "#2f241d",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: "18px",
+              top: "33px",
+              width: "16px",
+              height: "8px",
+              borderBottom: "3px solid #2f241d",
+              borderRadius: "0 0 999px 999px",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            position: "relative",
+            width: "50px",
+            height: "48px",
+            borderRadius: "44% 44% 42% 42%",
+            backgroundColor: "#fff7ed",
+            border: "2px solid #a16207",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              left: "3px",
+              top: "-12px",
+              width: "18px",
+              height: "18px",
+              backgroundColor: "#c08457",
+              transform: "rotate(45deg)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              right: "3px",
+              top: "-12px",
+              width: "18px",
+              height: "18px",
+              backgroundColor: "#c08457",
+              transform: "rotate(45deg)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: "14px",
+              top: "17px",
+              width: "5px",
+              height: "5px",
+              borderRadius: "999px",
+              backgroundColor: "#2f241d",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              right: "14px",
+              top: "17px",
+              width: "5px",
+              height: "5px",
+              borderRadius: "999px",
+              backgroundColor: "#2f241d",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: "21px",
+              top: "25px",
+              width: "8px",
+              height: "6px",
+              borderRadius: "0 0 999px 999px",
+              backgroundColor: "#f97316",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: "17px",
+              top: "33px",
+              width: "16px",
+              height: "8px",
+              borderBottom: "3px solid #2f241d",
+              borderRadius: "0 0 999px 999px",
+            }}
+          />
+        </div>
+        <div style={{ fontSize: "22px", color: "#fb7185", lineHeight: 1 }}>♥</div>
+      </div>
       <div
         style={{
-          marginTop: "8px",
-          fontSize: "22px",
+          marginTop: "6px",
+          fontSize: "18px",
           fontWeight: 800,
           color: "#be123c",
         }}
       >
-        謝謝，我們能有你真好❤️
+        謝謝，我們能有你真好
+        <span style={{ color: "#e11d48" }}>❤</span>
       </div>
     </div>
   );
@@ -183,13 +296,14 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = pdfWidth;
       const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pageOverflowTolerance = 1;
       let heightLeft = imgHeight;
       let position = 0;
 
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
       heightLeft -= pdfHeight;
 
-      while (heightLeft > 0) {
+      while (heightLeft > pageOverflowTolerance) {
         position -= pdfHeight;
         pdf.addPage();
         pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
@@ -310,7 +424,7 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             top: 0,
             width: "794px",
             minHeight: "1123px",
-            padding: "44px",
+            padding: "30px",
             backgroundColor: "#ffffff",
             color: "#111827",
             fontFamily: "Noto Sans TC, Microsoft JhengHei, sans-serif",
@@ -319,12 +433,12 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             pointerEvents: "none",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             <div
               style={{
                 textAlign: "center",
                 borderBottom: "1px dashed #e5e7eb",
-                paddingBottom: "16px",
+                paddingBottom: "10px",
               }}
             >
               <div
@@ -332,16 +446,16 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
                   fontSize: "12px",
                   fontWeight: 700,
                   color: "#f43f5e",
-                  letterSpacing: "0.24em",
+                  letterSpacing: "0.2em",
                   textTransform: "uppercase",
                 }}
               >
                 愛心捐贈明細
               </div>
-              <div style={{ marginTop: "8px", fontSize: "28px", fontWeight: 700 }}>
+              <div style={{ marginTop: "4px", fontSize: "24px", fontWeight: 700 }}>
                 毛孩物資愛心捐贈明細
               </div>
-              <div style={{ marginTop: "10px", fontSize: "14px", color: "#6b7280" }}>
+              <div style={{ marginTop: "5px", fontSize: "12px", color: "#6b7280" }}>
                 {THANK_YOU_MESSAGE}
               </div>
             </div>
@@ -352,8 +466,8 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
               style={{
                 border: "1px solid #fde68a",
                 backgroundColor: "#fffbeb",
-                borderRadius: "16px",
-                padding: "20px",
+                borderRadius: "14px",
+                padding: "12px",
               }}
             >
               <div
@@ -370,12 +484,12 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
                       fontSize: "12px",
                       fontWeight: 700,
                       color: "#b45309",
-                      letterSpacing: "0.2em",
+                      letterSpacing: "0.16em",
                     }}
                   >
                     收件資訊
                   </div>
-                  <div style={{ marginTop: "6px", fontSize: "24px", fontWeight: 700 }}>
+                  <div style={{ marginTop: "4px", fontSize: "20px", fontWeight: 700 }}>
                     {shelter.name}
                   </div>
                 </div>
@@ -383,8 +497,8 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
                   style={{
                     backgroundColor: "#ffffff",
                     borderRadius: "999px",
-                    padding: "8px 12px",
-                    fontSize: "13px",
+                    padding: "6px 10px",
+                    fontSize: "12px",
                     color: "#b45309",
                     maxWidth: "320px",
                     textAlign: "right",
@@ -395,53 +509,53 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
               </div>
               <div
                 style={{
-                  marginTop: "16px",
+                  marginTop: "10px",
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
+                  gap: "10px",
                 }}
               >
-                <div style={{ backgroundColor: "#ffffff", borderRadius: "12px", padding: "12px" }}>
+                <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", padding: "10px" }}>
                   <div style={{ fontSize: "11px", color: "#6b7280" }}>收件地址</div>
-                  <div style={{ marginTop: "6px", fontSize: "14px", fontWeight: 600 }}>
+                  <div style={{ marginTop: "4px", fontSize: "13px", fontWeight: 600 }}>
                     {shelter.address}
                   </div>
                 </div>
-                <div style={{ backgroundColor: "#ffffff", borderRadius: "12px", padding: "12px" }}>
+                <div style={{ backgroundColor: "#ffffff", borderRadius: "10px", padding: "10px" }}>
                   <div style={{ fontSize: "11px", color: "#6b7280" }}>聯絡電話</div>
-                  <div style={{ marginTop: "6px", fontSize: "14px", fontWeight: 600 }}>
+                  <div style={{ marginTop: "4px", fontSize: "13px", fontWeight: 600 }}>
                     {shelter.phone}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
               <div
                 style={{
                   border: "1px solid #e5e7eb",
-                  borderRadius: "16px",
-                  padding: "16px",
+                  borderRadius: "12px",
+                  padding: "10px",
                   backgroundColor: "#ffffff",
                 }}
               >
                 <div style={{ fontSize: "13px", fontWeight: 700, color: "#2563eb" }}>
                   捐贈人姓名
                 </div>
-                <div style={{ marginTop: "8px", minHeight: "24px", color: "#6b7280" }}>
+                <div style={{ marginTop: "5px", minHeight: "20px", color: "#6b7280" }}>
                   {donorName || "未填寫"}
                 </div>
               </div>
               <div
                 style={{
                   border: "1px solid #e5e7eb",
-                  borderRadius: "16px",
-                  padding: "16px",
+                  borderRadius: "12px",
+                  padding: "10px",
                   backgroundColor: "#ffffff",
                 }}
               >
                 <div style={{ fontSize: "13px", fontWeight: 700, color: "#2563eb" }}>聯絡電話</div>
-                <div style={{ marginTop: "8px", minHeight: "24px", color: "#6b7280" }}>
+                <div style={{ marginTop: "5px", minHeight: "20px", color: "#6b7280" }}>
                   {contactPhone || "未填寫"}
                 </div>
               </div>
@@ -450,8 +564,8 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             <div
               style={{
                 border: "1px solid #e5e7eb",
-                borderRadius: "16px",
-                padding: "16px",
+                borderRadius: "12px",
+                padding: "10px",
                 backgroundColor: "#ffffff",
               }}
             >
@@ -460,9 +574,9 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
               </div>
               <div
                 style={{
-                  marginTop: "8px",
+                  marginTop: "5px",
                   whiteSpace: "pre-wrap",
-                  minHeight: "72px",
+                  minHeight: "48px",
                   color: "#6b7280",
                 }}
               >
@@ -473,8 +587,8 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
             <div
               style={{
                 border: "1px solid #e5e7eb",
-                borderRadius: "16px",
-                padding: "16px",
+                borderRadius: "12px",
+                padding: "10px",
                 backgroundColor: "#ffffff",
               }}
             >
@@ -483,9 +597,9 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
               </div>
               <div
                 style={{
-                  marginTop: "8px",
+                  marginTop: "5px",
                   whiteSpace: "pre-wrap",
-                  minHeight: "72px",
+                  minHeight: "48px",
                   color: "#6b7280",
                 }}
               >
@@ -498,16 +612,16 @@ export function PackingDialog({ shelter, open, onOpenChange }: Props) {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "flex-end",
-                marginTop: "8px",
-                paddingTop: "12px",
+                marginTop: "2px",
+                paddingTop: "8px",
                 borderTop: "1px dashed #e5e7eb",
               }}
             >
               <div>
-                <div style={{ fontSize: "14px", fontWeight: 600 }}>
+                <div style={{ fontSize: "13px", fontWeight: 600 }}>
                   捐贈人親筆簽名：________________
                 </div>
-                <div style={{ marginTop: "8px", fontSize: "14px", fontWeight: 600 }}>
+                <div style={{ marginTop: "5px", fontSize: "13px", fontWeight: 600 }}>
                   日期：________________
                 </div>
               </div>

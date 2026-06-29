@@ -11,7 +11,7 @@ export function Hero() {
       />
       <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-transparent to-background/30" />
       <div className="relative mx-auto max-w-6xl px-6 pt-12 md:pt-20">
-        <div className="relative max-w-xl rounded-3xl bg-white/[0.15] p-5 backdrop-blur-[1px] md:bg-transparent md:p-0 md:backdrop-blur-none">
+        <div className="relative max-w-xl rounded-3xl bg-white/[0.2] p-5 backdrop-blur-[1px] md:bg-transparent md:p-0 md:backdrop-blur-none">
           <span className="hero-twinkle left-[8%] top-[14%] md:hidden" />
           <span className="hero-twinkle left-[72%] top-[8%] md:hidden" />
           <span className="hero-twinkle left-[88%] top-[34%] md:hidden" />
