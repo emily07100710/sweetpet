@@ -21,7 +21,7 @@ export function Hero() {
           <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             全台公益串聯 · 開源系統
           </span>
-          <h1 className="mt-5 font-display text-5xl leading-tight tracking-tight text-foreground drop-shadow-sm md:text-6xl">
+          <h1 className="mt-5 font-display text-[2.7rem] leading-tight tracking-tight text-foreground drop-shadow-sm md:text-6xl">
             用科技
             <span className="text-primary">點亮微光</span>
           </h1>
